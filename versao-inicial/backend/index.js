@@ -1,5 +1,9 @@
 const app = require('express') ()
 const consign = require('consign')
+const db = require('./config/db')
+
+//aqui tem o knex já configurado
+app.db = db
 
 consign()/*Facilita o gerenciamento das dependencias 
           Aqui o consign le as dependencias que o app precisa.*/
