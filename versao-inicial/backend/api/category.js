@@ -104,6 +104,33 @@ module.exports = app =>{
         .catch(err => res.status(500).send(err))
     }
 
-    return{ save, remove,get,getById}
+    //monta a arvore de categoria
+    const toTree = (categories,tree)=>{
+        /*se a arvore não estiver setada ele pega as categorias e filtra
+         as que não tem id setado para colocar no topo pega forma as categorias de alto nivel ou seja 
+         os pais */
+        if(!tree) tree = categories.filter(c => !c.parentId)
+        //transforma em um mapa pega todos os filhos
+        tree = tree.map(parentNode => {
+            const isChild = node => node.parentId == parentNode.id
+            parentNode.children = toTree(categories,categories.filter(isChild))
+            return parentNode
+        })
+        return tree
+    }
+
+    //serviço tree que sera mapeado pela url
+    const getTree=(req,res)=>{
+        //fazer uma consulta primeiro
+        app.db('categories')
+            /*gera todas as categorias com atributo path e o resultado 
+            vai ser usado na função que converte em arvore*/
+           .then(categories => res.json(toTree(withPath(categories))))
+           .catch(err => res.status(500).send(err))
+    }    
+
+
+
+    return{ save, remove,get,getById,getTree}
 
 }
