@@ -3,6 +3,12 @@ Tomar cuidado na rotas mantes sempre a rota pricipla na frente
 das outras que vão receber um parametro como id */
 
 module.exports = app =>{
+
+    //rotas de autenticação
+    app.post('/signup', app.api.user.save)
+    app.post('/signin', app.api.auth.signin)
+    app.post('/validateToken', app.api.auth.validateToken)
+
     app.route('/users')
     /*O consign faz a busca automatica dos arquivos necessarios 
     Não sendo necessario fazer o require do user para usar a função save*/
