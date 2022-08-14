@@ -7,6 +7,7 @@ app.db = db
 
 consign()/*Facilita o gerenciamento das dependencias 
           Aqui o consign le as dependencias que o app precisa.*/
+        .include('./config/passport.js') 
         .then('./config/middlewares.js')
         .then('./api/validation.js')
         .then('./api')

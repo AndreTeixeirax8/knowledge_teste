@@ -10,6 +10,8 @@ module.exports = app =>{
     app.post('/validateToken', app.api.auth.validateToken)
 
     app.route('/users')
+    //firltro usado para forçar a autenticação
+    .all(app.config.passport.authenticate())
     /*O consign faz a busca automatica dos arquivos necessarios 
     Não sendo necessario fazer o require do user para usar a função save*/
     .post(app.api.user.save)
@@ -17,32 +19,46 @@ module.exports = app =>{
     .get(app.api.user.get)
 
     app.route('/users/:id')
+        //firltro usado para forçar a autenticação
+        .all(app.config.passport.authenticate())
         .put(app.api.user.save)
         //retorna o user ID 
         .get(app.api.user.getById)
     
     //rota de categoria 
     app.route('/categories')
+        //firltro usado para forçar a autenticação
+        .all(app.config.passport.authenticate())
         .get(app.api.category.get)
         .post(app.api.category.save)
 
      app.route('/categories/tree')
+        //firltro usado para forçar a autenticação
+        .all(app.config.passport.authenticate())
         .get(app.api.category.getTree)
         
     app.route('/categories/:id')
+        //firltro usado para forçar a autenticação
+        .all(app.config.passport.authenticate())
         .get(app.api.category.getById)
         .put(app.api.category.save)
         .delete(app.api.category.remove)
 
     app.route('/articles')
+        //firltro usado para forçar a autenticação
+        .all(app.config.passport.authenticate())
         .get(app.api.article.get)
         .post(app.api.article.save)
 
-    app.route('/articles/:id')    
+    app.route('/articles/:id')   
+        //firltro usado para forçar a autenticação
+        .all(app.config.passport.authenticate()) 
         .get(app.api.article.getById)
         .put(app.api.article.save)
         .delete(app.api.article.remove)
     
      app.route('/categories/:id/articles')  
+        //firltro usado para forçar a autenticação
+        .all(app.config.passport.authenticate())
         .get(app.api.article.getByCategory) 
 }       
