@@ -1,3 +1,4 @@
+const admin = require('./admin')
 /*Definição das rotas da aplicação
 Tomar cuidado na rotas mantes sempre a rota pricipla na frente
 das outras que vão receber um parametro como id */
@@ -21,9 +22,10 @@ module.exports = app =>{
     app.route('/users/:id')
         //firltro usado para forçar a autenticação
         .all(app.config.passport.authenticate())
-        .put(app.api.user.save)
+        .put(admin(app.api.user.save))
         //retorna o user ID 
-        .get(app.api.user.getById)
+        .get(admin(app.api.user.getById))
+        .delete(admin(app.api.user.remove))
     
     //rota de categoria 
     app.route('/categories')
@@ -41,8 +43,8 @@ module.exports = app =>{
         //firltro usado para forçar a autenticação
         .all(app.config.passport.authenticate())
         .get(app.api.category.getById)
-        .put(app.api.category.save)
-        .delete(app.api.category.remove)
+        .put(admin(app.api.category.save))
+        .delete(admin(app.api.category.remove))
 
     app.route('/articles')
         //firltro usado para forçar a autenticação
@@ -54,11 +56,16 @@ module.exports = app =>{
         //firltro usado para forçar a autenticação
         .all(app.config.passport.authenticate()) 
         .get(app.api.article.getById)
-        .put(app.api.article.save)
-        .delete(app.api.article.remove)
+        .put(admin(app.api.article.save))
+        //o admin leva para o middleware e verifica se ele é admin ou não 
+        .delete(admin(app.api.article.remove))
     
      app.route('/categories/:id/articles')  
         //firltro usado para forçar a autenticação
         .all(app.config.passport.authenticate())
         .get(app.api.article.getByCategory) 
+
+
+    app.route('/stats')
+        .get(app.api.stat.get)
 }       
